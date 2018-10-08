@@ -1,6 +1,7 @@
 var express=require('express');
 var router=express.Router();
 var User=require('../models/user');
+var Enquiry=require('../models/enquiry');
 var passport=require('passport');
 var localStrategy=require('passport-local').Strategy;
 
@@ -63,4 +64,5 @@ router.get('/logout',(req,res)=>{
     req.logout();
     res.redirect('/');
 });
+
 module.exports=router;

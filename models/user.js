@@ -12,12 +12,12 @@ var userSchema=mongoose.Schema({
     }
 });
 
-module.exports=mongoose.model('User',userSchema,'User');
+var User=module.exports=mongoose.model('User',userSchema);
 
 module.exports.hashPassword=(user,callback)=>{
-    bcrypt.getSalt(10,(err,salt)=>{
-        bcrypt.hash(user.Password,salt,(err,hash)=>{
-            user.Password=hash;
+    bcrypt.genSalt(10,(err,salt)=>{
+        bcrypt.hash(user.password,salt,(err,hash)=>{
+            user.password=hash;
             user.save(callback);
         });
     });

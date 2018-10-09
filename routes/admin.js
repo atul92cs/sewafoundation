@@ -1,68 +1,88 @@
-var express=require('express');
-var router=express.Router();
-var User=require('../models/user');
-var Enquiry=require('../models/enquiry');
-var passport=require('passport');
-var localStrategy=require('passport-local').Strategy;
+var express = require('express');
+var router = express.Router();
+var User = require('../models/user');
+var Enquiry = require('../models/enquiry');
+var passport = require('passport');
+var localStrategy = require('passport-local').Strategy;
 
-router.post('/register',(req,res)=>{
-    var email=req.body.email;
-    var password=req.body.password;
-    var conPassword=req.body.password2;
-    User.findOne(email,(err,user)=>{
-        if(err)
-            {
-                res.send(500).send('some error occured');
-            }
-        else
-            {
-                res.send(500).send('user already exists');
-            }
-        else
-            {
-                var user =new User({
-                    email:email,
-                    password:password
+router.post('/register', (req, res) => {
+    var email = req.body.email;
+    var password = req.body.password;
+    var conPassword = req.body.password2;
+    User.getUserbyEmail(email, (err, user) => {
+        if (err) {
+            res.status(500).send('some error occured');
+        } else {
+            if (user) {
+                res.status(500).send('user already exists');
+            } else {
+                var user = new User({
+                    email: email,
+                    password: password
                 });
-                user.hashPassword(user,(err,user)=>{
-                    if(err) throw err;
+                User.hashPassword(user, (err, user) => {
+                    if (err) throw err;
                     res.send('user registered');
                 });
 
             }
+        }
     });
 });
-passport.use(new localStrategy((email,password,done)=>{
-    User.getUserByEmail(email,(err,user)=>{
-        if(err)throw err;
-        if(!user)
-            {
-                return done(null,false,{message:'user does not exist'})
+passport.use(new localStrategy((email, password, done) => {
+    User.getUserByEmail(email, (err, user) => {
+        if (err) throw err;
+        if (!user) {
+            return done(null, false, {
+                message: 'user does not exist'
+            })
+        }
+        User.comparePassword(password, user.password, (err, isMatch) => {
+            if (err) throw err;
+            if (isMatch) {
+                return (done, user);
+            } else {
+                return (null, false, {
+                    message: 'Invalid password'
+                });
             }
-          User.comparePassword(password,user.password,(err,isMatch)=>{
-              if(err) throw err;
-              if(isMatch){
-                  return(done,user);
-              }else{
-                  return(null,false,{message:'Invalid password'});
-              }
-          });
+        });
     });
 }));
-passport.serializeUser((user,done)=>{
-    done(null,user.id);
+passport.serializeUser((user, done) => {
+    done(null, user.id);
 });
-passport.deserializeUser((id,done)=>{
-    User.getUserById(id,(err,use)=>{
-        done(err,user);
+passport.deserializeUser((id, done) => {
+    User.getUserById(id, (err, use) => {
+        done(err, user);
     });
 });
-router.post('/login',passport.authenticate('local',{failureRedirect:'/login',sucessRedirect:'/panel'}),(req,res)=>{
+router.post('/login', passport.authenticate('local', {
+    failureRedirect: '/login',
+    sucessRedirect: '/panel'
+}), (req, res) => {
     res.send('welcome user');
 });
-router.get('/logout',(req,res)=>{
+router.get('/logout', (req, res) => {
     req.logout();
     res.redirect('/');
 });
+router.get('/enquires', (req, res) => {
 
-module.exports=router;
+});
+router.post('/update/enquiry', (req, res) => {
+
+});
+router.post('/event/add', (req, res) => {
+
+});
+router.get('/event', (req, res) => {
+
+});
+router.delete('/event/:id', (req, res) => {
+
+});
+router.post('/event/update', (req, res) => {
+
+});
+module.exports = router;

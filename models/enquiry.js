@@ -1,7 +1,7 @@
 const mongoose=require('mongoose');
 
-var enquirySchema=mongoose.Schema({
-    id:mongoose.Schema.Types.OjectId,
+const enquirySchema=mongoose.Schema({
+    id:mongoose.Schema.Types.ObjectId,
     name:{
         type:String,
         required:true

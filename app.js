@@ -27,6 +27,7 @@ app.get('/',routes.home);
 app.get('/login',routes.login);
 app.get('/panel',routes.panel);
 app.post('/register',admin);
+app.post('/login',admin);
 app.listen(port,()=>{
     console.log('server started on' + ' ' +port);
 });

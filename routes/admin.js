@@ -39,6 +39,7 @@ passport.use(new localStrategy((email, password, done) => {
             if (err) throw err;
             if (isMatch) {
                 return done(null, user);
+                
             } else {
                 return done(null, false);
             }
@@ -46,7 +47,8 @@ passport.use(new localStrategy((email, password, done) => {
     });
 }));
 passport.serializeUser((user, done) => {
-    done(null, user);
+    done(null, user._id);
+    console.log(user);
 });
 passport.deserializeUser((id, done) => {
     User.getUserbyId(id, (err, user) => {
@@ -58,6 +60,7 @@ router.post('/login', passport.authenticate('local', {
     failureRedirect: '/login'
 }), (req, res) => {
     res.redirect('/panel');
+   
 });
 router.get('/logout', (req, res) => {
     req.logout();

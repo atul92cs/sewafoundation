@@ -10,10 +10,9 @@ router.post('/sendEnquiry',(req,res)=>{
     var email=req.body.email;
     var query=req.body.query;
     const enquiry=new Enquiry({
-        id:new mongoose.Types.ObjectId(),
+        name:name,
         phone:phone,
         email:email,
-        phone:phone,
         query:query
     });
     enquiry.save()

@@ -28,6 +28,7 @@ app.get('/login',routes.login);
 app.get('/panel',routes.panel);
 app.post('/register',admin);
 app.post('/login',admin);
+app.post('/sendEnquiry',user);
 app.listen(port,()=>{
     console.log('server started on' + ' ' +port);
 });

@@ -31,7 +31,7 @@ module.exports.getUserbyId=(id,callback)=>{
     User.findById(id,callback);
     
 }
-module.exports.comparePassword=(userPassword,callback)=>{
+module.exports.comparePassword=(userPassword,hash,callback)=>{
     bcrypt.compare(userPassword,hash,(err,isMatch)=>{
         if(err) throw err;
         callback(null,isMatch);

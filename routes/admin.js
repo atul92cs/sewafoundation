@@ -30,38 +30,34 @@ router.post('/register', (req, res) => {
     });
 });
 passport.use(new localStrategy((email, password, done) => {
-    User.getUserByEmail(email, (err, user) => {
+    User.getUserbyEmail(email, (err, user) => {
         if (err) throw err;
         if (!user) {
-            return done(null, false, {
-                message: 'user does not exist'
-            })
+            return done(null, false);
         }
         User.comparePassword(password, user.password, (err, isMatch) => {
             if (err) throw err;
             if (isMatch) {
-                return (done, user);
+                return done(null, user);
             } else {
-                return (null, false, {
-                    message: 'Invalid password'
-                });
+                return done(null, false);
             }
         });
     });
 }));
 passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, user);
 });
 passport.deserializeUser((id, done) => {
-    User.getUserById(id, (err, use) => {
+    User.getUserbyId(id, (err, user) => {
         done(err, user);
     });
 });
 router.post('/login', passport.authenticate('local', {
-    failureRedirect: '/login',
-    sucessRedirect: '/panel'
+    sucessRedirect: '/panel',
+    failureRedirect: '/login'
 }), (req, res) => {
-    res.send('welcome user');
+    res.redirect('/panel');
 });
 router.get('/logout', (req, res) => {
     req.logout();

@@ -13,7 +13,8 @@ router.post('/sendEnquiry',(req,res)=>{
         name:name,
         phone:phone,
         email:email,
-        query:query
+        query:query,
+        status:'Enquried'
     });
     enquiry.save()
        .then(result=>{

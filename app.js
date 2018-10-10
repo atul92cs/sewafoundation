@@ -32,6 +32,10 @@ app.post('/register',admin);
 app.post('/login',admin);
 app.post('/sendEnquiry',user);
 app.post('/event/add',admin);
+app.post('/event/update',admin);
+app.post('/update/enquiry',admin);
+app.delete('/event/:id',admin);
+app.delete('/enquiry/:id',admin);
 app.listen(port,()=>{
     console.log('server started on' + ' ' +port);
 });

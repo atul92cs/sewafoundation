@@ -18,6 +18,10 @@ const enquirySchema=mongoose.Schema({
     query:{
         type:String,
         required:true
+    },
+    status:{
+        type:String,
+        required:true
     }
 }); 
 

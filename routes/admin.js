@@ -68,7 +68,46 @@ router.get('/logout', (req, res) => {
     res.redirect('/');
 });
 router.post('/update/enquiry', (req, res) => {
-
+    let record={};
+    record.name=req.body.name;
+    record.phone=req.body.phone;
+    record.email=req.body.email;
+    record.query=req.body.query;
+    record.status=req.body.status;
+    let query={_id:req.body._id};
+    Enquiry.updateOne(query,record,(err)=>{
+        if(err)
+            {
+                res.send(err);
+            }
+        else
+            {
+                res.send('Enquiry status update');
+            }
+    });
+});
+router.delete('/enquiry/:id',(req,res)=>{
+    var id =req.params.id;
+    let query={_id:id};
+    Enquiry.findById(id,(err,Enquiries)=>{
+        if(err)
+            {
+                res.send(err);
+            }
+        else
+            {
+                Enquiry.deleteOne(query,(err)=>{
+                    if(err)
+                        {
+                            res.send(err);
+                        }
+                    else
+                        {
+                            res.send('Enquiry deleted');
+                        }
+                });
+            }
+    });
 });
 router.post('/event/add', (req, res) => {
     var name = req.body.name;
@@ -88,9 +127,45 @@ router.post('/event/add', (req, res) => {
 });
 
 router.delete('/event/:id', (req, res) => {
-
+     var id=req.body._id;
+    let query={_id:id};
+    Event.findById(id,(err,Events)=>{
+        if(err)
+            {
+              res.send(err);   
+            }
+        else
+            {
+                Event.deleteOne(query,(err)=>{
+                    if(err)
+                        {
+                            res.send(err);
+                        }
+                    else
+                        {
+                            res.send('Success');
+                        }
+                });
+            }
+    });
+    
 });
 router.post('/event/update', (req, res) => {
-
+      let record={};
+    record.name=req.body.name;
+    record.date=req.body.date;
+    record.content=req.body.content;
+    let query={_id:req.body._id};
+    Event.updateOne(query,record,(err)=>{
+        if(err)
+            {
+                res.send(err);
+            }
+        else
+            {
+                res.send('event update');
+            }
+    });
+      
 });
 module.exports = router;

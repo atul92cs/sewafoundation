@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 var Enquiry = require('../models/enquiry');
+var Event = require('../models/event');
 var passport = require('passport');
 var localStrategy = require('passport-local').Strategy;
 
@@ -39,7 +40,7 @@ passport.use(new localStrategy((email, password, done) => {
             if (err) throw err;
             if (isMatch) {
                 return done(null, user);
-                
+
             } else {
                 return done(null, false);
             }
@@ -60,24 +61,32 @@ router.post('/login', passport.authenticate('local', {
     failureRedirect: '/login'
 }), (req, res) => {
     res.redirect('/panel');
-   
+
 });
 router.get('/logout', (req, res) => {
     req.logout();
     res.redirect('/');
 });
-router.get('/enquires', (req, res) => {
-
-});
 router.post('/update/enquiry', (req, res) => {
 
 });
 router.post('/event/add', (req, res) => {
-
+    var name = req.body.name;
+    var date = req.body.date;
+    var content = req.body.content;
+    const event = new Event({
+        name: name,
+        date: date,
+        content: content
+    });
+    event.save().
+    then(result => {
+        res.send('event created');
+    }).catch(err => {
+        res.send(err);
+    });
 });
-router.get('/event', (req, res) => {
 
-});
 router.delete('/event/:id', (req, res) => {
 
 });

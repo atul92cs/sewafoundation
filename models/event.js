@@ -8,7 +8,8 @@ var eventSchema=mongoose.Schema({
          },
     date:{
         type:String,
-        required:true
+        required:true,
+        trim:true
          },
     content:{
         type:String,

@@ -26,9 +26,12 @@ app.use(express.static(path.join(__dirname,'public')));
 app.get('/',routes.home);
 app.get('/login',routes.login);
 app.get('/panel',routes.panel);
+app.get('/enquiries',routes.enquiriesboard);
+app.get('/events',routes.eventboard);
 app.post('/register',admin);
 app.post('/login',admin);
 app.post('/sendEnquiry',user);
+app.post('/event/add',admin);
 app.listen(port,()=>{
     console.log('server started on' + ' ' +port);
 });
